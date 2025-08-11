@@ -193,4 +193,5 @@ group by p.prop_id) rev_count on rev_count.prop_id = p.prop_id
 left join (select distinct on (inst_id) inst_id, eri, unitid
 from misc.inst_eri_stts ies 
 order by inst_id, eri_yr desc) eri on eri.inst_id = i.inst_id 
-WHERE (p.dd_rcom_date BETWEEN '10-01-2014' AND CURRENT_DATE)
+WHERE o.dir_div_abbr = 'SBE
+

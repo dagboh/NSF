@@ -13,39 +13,39 @@ library(ggforce)
 ##########PULLING SQL DATA###########
 
 #PULLED FROM NSF DATA SYSTEMS
-SBESecurity<- read_excel("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBE_National_Security_Projects_Titles.xlsx", skip=2)
+SBEBiotech<- read_excel("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBE_Biotech_Projects.xlsx", skip=2)
 
-SBESecurity$`Fiscal Year Number`[grepl("^20", as.character(SBESecurity$`Proposal ID`))] <- 2020
+SBEBiotech$`Fiscal Year Number`[grepl("^20", as.character(SBEBiotech$`Proposal ID`))] <- 2020
 
-SBESecurity$`Fiscal Year Number`[grepl("^21", as.character(SBESecurity$`Proposal ID`))] <- 2021
+SBEBiotech$`Fiscal Year Number`[grepl("^21", as.character(SBEBiotech$`Proposal ID`))] <- 2021
 
-SBESecurity$`Fiscal Year Number`[grepl("^22", as.character(SBESecurity$`Proposal ID`))] <- 2022
+SBEBiotech$`Fiscal Year Number`[grepl("^22", as.character(SBEBiotech$`Proposal ID`))] <- 2022
 
-SBESecurity$`Fiscal Year Number`[grepl("^23", as.character(SBESecurity$`Proposal ID`))] <- 2023
+SBEBiotech$`Fiscal Year Number`[grepl("^23", as.character(SBEBiotech$`Proposal ID`))] <- 2023
 
-SBESecurity$`Fiscal Year Number`[grepl("^24", as.character(SBESecurity$`Proposal ID`))] <- 2024
+SBEBiotech$`Fiscal Year Number`[grepl("^24", as.character(SBEBiotech$`Proposal ID`))] <- 2024
 
-SBESecurity$`Fiscal Year Number`[grepl("^25", as.character(SBESecurity$`Proposal ID`))] <- 2025
+SBEBiotech$`Fiscal Year Number`[grepl("^25", as.character(SBEBiotech$`Proposal ID`))] <- 2025
 
 
 #RENAME VARIABLES
 
-SBESecurity <- rename(SBESecurity, "race" = "PI Race")
-SBESecurity <- rename(SBESecurity, "gender" = "PI Gender")
-SBESecurity <- rename(SBESecurity, "ethnicity" = "PI Ethnicity")
-SBESecurity <- rename(SBESecurity, "disability" = "PI Disability Code")
-SBESecurity <- rename(SBESecurity, "prop_id" = "Proposal ID")
-SBESecurity <- rename(SBESecurity, "ERI" = "ERI Category")
-SBESecurity <- rename(SBESecurity, "NewAwardee" = "New Awardee Flag")
-SBESecurity <- rename(SBESecurity, "prop_status" = "Proposal Status Description")
-SBESecurity <- rename(SBESecurity, "inst_id" = "Institution Identifer")
-SBESecurity <- rename(SBESecurity, "awdamount" = "Total Intended Award Amount (Original from Awards)")
-SBESecurity <- rename(SBESecurity, "rqstamount" = "Request Amount")
-SBESecurity <- rename(SBESecurity, "division" = "NSF Division Abbreviation Name")
-SBESecurity <- rename(SBESecurity, "year" = "Fiscal Year Number")
-SBESecurity <- rename(SBESecurity, "ZIP" = "PI Zip Code")
-SBESecurity <- rename(SBESecurity, "st_code" = "PI State Code")
-SBESecurity <- rename(SBESecurity, "program" = "Program Element Name")
+SBEBiotech <- rename(SBEBiotech, "race" = "PI Race")
+SBEBiotech <- rename(SBEBiotech, "gender" = "PI Gender")
+SBEBiotech <- rename(SBEBiotech, "ethnicity" = "PI Ethnicity")
+SBEBiotech <- rename(SBEBiotech, "disability" = "PI Disability Code")
+SBEBiotech <- rename(SBEBiotech, "prop_id" = "Proposal ID")
+SBEBiotech <- rename(SBEBiotech, "ERI" = "ERI Category")
+SBEBiotech <- rename(SBEBiotech, "NewAwardee" = "New Awardee Flag")
+SBEBiotech <- rename(SBEBiotech, "prop_status" = "Proposal Status Description")
+SBEBiotech <- rename(SBEBiotech, "inst_id" = "Institution Identifer")
+SBEBiotech <- rename(SBEBiotech, "awdamount" = "Total Intended Award Amount (Original from Awards)")
+SBEBiotech <- rename(SBEBiotech, "rqstamount" = "Request Amount")
+SBEBiotech <- rename(SBEBiotech, "division" = "NSF Division Abbreviation Name")
+SBEBiotech <- rename(SBEBiotech, "year" = "Fiscal Year Number")
+SBEBiotech <- rename(SBEBiotech, "ZIP" = "PI Zip Code")
+SBEBiotech <- rename(SBEBiotech, "st_code" = "PI State Code")
+SBEBiotech <- rename(SBEBiotech, "program" = "Program Element Name")
 
 #SQL ATTEMPT PULLED WRONG DATA.
 
@@ -89,7 +89,7 @@ SBESecurity <- rename(SBESecurity, "program" = "Program Element Name")
 #WHERE pr.sub_date >= '2020-05-01 00:00:00' and pr.sub_date <= '2025-07-13 23:59:59' and awd.org_code like '04%' and ( impact.society like '%foreign policy%' or impact.society like '%security%' or impact.society like '%conflict%' or impact.society like '%interstate war%' or impact.society like '%intrastate war%' or impact.society like '%dispute resolution%' or impact.society like '%peace studies%' or impact.society like '%peace science%' or impact.society like '%cybersecurity%' or impact.society like '%treaty %' or impact.society like '%treaties%' ) 
 #ORDER by division asc, program asc limit 2025-07-13"
 
-#SBESecurity <- dbGetQuery(con,SBE_Security) %>% 
+#SBEBiotech <- dbGetQuery(con,SBE_Security) %>% 
 #  mutate(across(where(is.character),str_trim))
 
 #ADD CARNEGIE CLASSIFICATIONS
@@ -98,14 +98,14 @@ carnegie_crosswalk <- read_excel("C:/Users/dagboh/OneDrive - National Science Fo
 
 carnegie_crosswalk <- rename(carnegie_crosswalk,"inst_id" = "NSF Institution ID")
 
-SBESecurity <-  left_join(SBESecurity, carnegie_crosswalk, by = "inst_id")
+SBEBiotech <-  left_join(SBEBiotech, carnegie_crosswalk, by = "inst_id")
 
-write.csv(SBESecurity, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBESecurity.csv")
+write.csv(SBEBiotech, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotech_FullData.csv")
 
 ##########CLEAN DATA###########
 
 ## Fixing Carnegie Variables
-SBESecurity <- SBESecurity %>%
+SBEBiotech <- SBEBiotech %>%
   mutate(MSI = case_when(
     `Historically Black College or University` == "Yes" ~ "HBCU" ,
     `Hispanic Serving Institution` == "Yes" ~ "HSI",
@@ -115,40 +115,40 @@ SBESecurity <- SBESecurity %>%
 
 #Create/clean MSI variables
 
-SBESecurity$MSI[is.na(SBESecurity$MSI)] <- "Not an MSI"
-SBESecurity$`2018 Carnegie Basic Classification`[is.na(SBESecurity$`2018 Carnegie Basic Classification`)] <- "Not an IHE*"
+SBEBiotech$MSI[is.na(SBEBiotech$MSI)] <- "Not an MSI"
+SBEBiotech$`2018 Carnegie Basic Classification`[is.na(SBEBiotech$`2018 Carnegie Basic Classification`)] <- "Not an IHE*"
 
-SBESecurity$MSI_Broad <- SBESecurity$MSI
-SBESecurity$MSI_Broad[SBESecurity$MSI_Broad %in% c("HBCU","HSI","Other MSI")] <- "MSI"
+SBEBiotech$MSI_Broad <- SBEBiotech$MSI
+SBEBiotech$MSI_Broad[SBEBiotech$MSI_Broad %in% c("HBCU","HSI","Other MSI")] <- "MSI"
 
-SBESecurity$MSI <- fct_relevel(SBESecurity$MSI, c("Not an IHE*","Not an MSI","Other MSI","HSI","HBCU"))
+SBEBiotech$MSI <- fct_relevel(SBEBiotech$MSI, c("Not an IHE*","Not an MSI","Other MSI","HSI","HBCU"))
 
 #Cleam demographic variables
-SBESecurity$race[SBESecurity$race == "U"] <- "Unknown"
+SBEBiotech$race[SBEBiotech$race == "U"] <- "Unknown"
 
-SBESecurity$ethnicity[is.na(SBESecurity$ethnicity)] <- "Unknown"
+SBEBiotech$ethnicity[is.na(SBEBiotech$ethnicity)] <- "Unknown"
 
-SBESecurity$gender[is.na(SBESecurity$gender)] <- "Unknown"
+SBEBiotech$gender[is.na(SBEBiotech$gender)] <- "Unknown"
 
-SBESecurity <- SBESecurity %>%
+SBEBiotech <- SBEBiotech %>%
   mutate(gender = recode(gender,
                          "M" = "Male",
                          "F" = "Female",
                          "U" = "Unknown",
                          "X" = "Do not wish to provide"))
 
-SBESecurity <- SBESecurity %>%
+SBEBiotech <- SBEBiotech %>%
   mutate(disability = recode(disability,
                              "Y" = "Yes",
                              "N" = "No",
                              "U" = "Unknown",
                              "X" = "Do not wish to provide"))
 
-SBESecurity$race[!SBESecurity$race %in% c("Asian","Black or African American","Do not wish to provide","Unknown","White")] <- "Two or more"
+SBEBiotech$race[!SBEBiotech$race %in% c("Asian","Black or African American","Do not wish to provide","Unknown","White")] <- "Two or more"
 
-SBESecurity$year <- as.numeric(as.character(SBESecurity$year))
+SBEBiotech$year <- as.numeric(as.character(SBEBiotech$year))
 
-SBESecurity <- SBESecurity %>%
+SBEBiotech <- SBEBiotech %>%
   mutate(WhiteNonWhite = case_when(race == "White" ~ "White",
                                    race != "White" ~ "Non-White"))
 
@@ -265,7 +265,7 @@ ERI_colors <- c( "Unknown" = "grey",
                  "Non-Emerging Research Inst" = color_scale2[2],
                  "Emerging Research Inst" = color_scale2[1]) 
 
-category_colors <- c("National Security Only" = color_scale2[1],
+category_colors <- c("Biotech Only" = color_scale2[1],
                      "SBE Total" = color_scale2[2])
 
 division_colors <- c( "NCSE" = color_scale2[4],
@@ -318,7 +318,7 @@ disab_order <- c("Yes",
 
 #Budget By Division
 
-AwdAmount_by_Division <- SBESecurity %>%
+AwdAmount_by_Division <- SBEBiotech %>%
   group_by(`division`) %>%
   summarize(
     total_budget = sum(awdamount, na.rm = TRUE),
@@ -328,9 +328,9 @@ AwdAmount_by_Division <- SBESecurity %>%
   arrange(desc(total_budget))
 
 
-write.csv(AwdAmount_by_Division, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/AwdAmount_by_Division.csv")
+write.csv(AwdAmount_by_Division, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotech_AwdAmount_by_Division.csv")
 
-AwdAmount_by_DivisionYear <- SBESecurity %>%
+AwdAmount_by_DivisionYear <- SBEBiotech %>%
   group_by(`division`, `year`) %>%
   summarize(
     total_budget = sum(awdamount, na.rm = TRUE),
@@ -340,12 +340,12 @@ AwdAmount_by_DivisionYear <- SBESecurity %>%
   arrange(desc(total_budget))
 
 
-write.csv(AwdAmount_by_DivisionYear, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/AwdAmount_by_DivisionYear.csv")
+write.csv(AwdAmount_by_DivisionYear, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotech_AwdAmount_by_DivisionYear.csv")
 
 
 #Budget by Program
 
-AwdAmount_by_Program <- SBESecurity %>%
+AwdAmount_by_Program <- SBEBiotech %>%
   group_by(`program`, `year`) %>%
   summarize(
     total_budget = sum(awdamount, na.rm = TRUE),
@@ -354,12 +354,12 @@ AwdAmount_by_Program <- SBESecurity %>%
   ) %>%
   arrange(desc(total_budget))
 
-write.csv(AwdAmount_by_Program, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/AwdAmount_by_Program.csv")
+write.csv(AwdAmount_by_Program, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotech_AwdAmount_by_Program.csv")
 
 
 #Budget by Year
 
-AwdAmount_by_Year <- SBESecurity %>%
+AwdAmount_by_Year <- SBEBiotech %>%
   group_by(year) %>%
   summarize(total_budget = sum(awdamount, na.rm = TRUE),
             avg_budget = mean(awdamount, na.rm = TRUE),
@@ -373,7 +373,7 @@ SBETotal_AwdAmount_by_Year <- SBETotal %>%
             n_projects = n()) %>%
   arrange(year)
 
-AwdAmount_by_Year$Category <- "National Security Only"
+AwdAmount_by_Year$Category <- "Biotech Only"
 
 SBETotal_AwdAmount_by_Year$Category <- "SBE Total"
 
@@ -387,7 +387,7 @@ FullAwdAmount_by_Year <- FullAwdAmount_by_Year %>%
   ) %>%
   ungroup()
 
-write.csv(FullAwdAmount_by_Year, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/FullAwdAmount_by_Year.csv")
+write.csv(FullAwdAmount_by_Year, "C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotech_FullAwdAmount_by_Year.csv")
 
 
 ##########PLOTS##########
@@ -399,11 +399,11 @@ AwdAmount_by_Year_plot <- ggplot(FullAwdAmount_by_Year, aes(x = as.numeric(year)
   geom_bar(stat = "identity", position="dodge") +
   geom_smooth(method = "lm", se = FALSE, show.legend=FALSE) +
   scale_x_discrete(drop = FALSE) +
-  labs(title = "SBE-Funded National Security Projects (2020-2025): Total Award 
-Amount by Year (n=445)",
+  labs(title = "SBE-Funded Biotech Projects (2020-2025): Total Award 
+Amount by Year (n=525)",
        x = "Fiscal Year",
        y = "Total Award Amount",
-       fill = "National Security 
+       fill = "Biotech 
 vs. SBE Total") +
   geom_label(aes(label = percent(prop, accuracy = 1)), vjust = 0.5, size = 2.5, fill = "white", alpha = 0.7) +
   scale_y_continuous(
@@ -418,15 +418,15 @@ vs. SBE Total") +
   guides(color= "none")
 
 print(AwdAmount_by_Year_plot)
-ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBENSAwards_byYear.png" ,width = 7, height = 4)
+ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotechAwards_byYear.png" ,width = 7, height = 4)
 
 #Awd Amount by Year and#Awd Amount by Year and#Awd Amount by Year and Program
-DivAwdAmount_by_Year_plot <- ggplot(AwdAmount_by_Division, aes(x = as.numeric(year), y = total_budget, color = division)) +
+DivAwdAmount_by_Year_plot <- ggplot(AwdAmount_by_DivisionYear, aes(x = as.numeric(year), y = total_budget, color = division)) +
   geom_line(size=0.7)+
   geom_point(size=2) +
   scale_x_discrete(drop = FALSE) +
-  labs(title = "SBE-Funded National Security Projects (2020-2025): Total Award Amount 
-by Division and Year (n=445)",
+  labs(title = "SBE-Funded Biotech Projects (2020-2025): Total Award Amount 
+by Division and Year (n=525)",
        x = "Fiscal Year",
        y = "Total Award Amount",
        color = "Division") +
@@ -435,11 +435,11 @@ by Division and Year (n=445)",
     labels = dollar
   )+
   scale_x_continuous(breaks = unique(AwdAmount_by_Year$year))+
-  geom_text(aes(label = dollar(total_budget)), vjust = -0.5, hjust = -0.5, size = 2.5)+
+  geom_text(aes(label = dollar(total_budget)), vjust = -0.5, hjust = 0.5, size = 2.5)+
   theme_minimal()
 
 print(DivAwdAmount_by_Year_plot)
-ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBENSAwards_byDvsnYear.png" ,width = 7, height = 4)
+ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotechAwards_byDvsnYear.png" ,width = 7, height = 4)
 
 ###########EPSCOR MAP##########
 
@@ -459,7 +459,7 @@ EPSCOR_states <- states(cb = TRUE, resolution = "20m") %>%
   filter(!STUSPS %in% c("GU","AS","MP","VI", "WA","OR","CA","AZ","UT","CO","TX","MN","MO","WI","IL","TN","IN","MI","OH","TN","GA","FL","NC","VA","DC","MD","PA","NJ","CT","NY","MA")) %>%
   shift_geometry()
 
-props_by_state <- SBESecurity %>%
+props_by_state <- SBEBiotech %>%
   group_by(st_code) %>%
   summarise(count = n()) 
 
@@ -480,13 +480,15 @@ ggplot() +
   scale_fill_continuous(low = "#deebf7", high = "#3182bd") +
   geom_sf(data = EPSCOR_states, fill = "transparent", color = "red") +
   geom_sf_text(data = props_with_states, aes(label = count), check_overlap = TRUE,size=8) +
+  annotate("text", x = Inf, y = -Inf, label = "* red outline = EPSCoR State",
+           hjust = 1.1, vjust = -0.5, size = 4, fontface = "italic") +
   theme_void() +  
   theme(legend.position = "none") + 
-  labs(title = "Geographic Distribution of SBE-Awarded National Security Projects: 2020-2025 (n=445)")+
+  labs(title = "Geographic Distribution of SBE-Awarded Biotech Projects: 2020-2025 (n=525)")+
   theme(text = element_text(size = 14))
 
 
-ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBESecurity_EPSCoRmap.png",width = 13.3, height = 7.5)
+ggsave("C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotechAwards_EPSCoRmap.png",width = 13.3, height = 7.5)
 
 #EPSCOR STATE TABLE#
 
@@ -496,9 +498,9 @@ epscor_states <- c(
   "PR", "RI", "SC", "SD", "VT", "VI", "WV", "WY"
 )
 
-SBESecurity_EPSCOROnly <- props_by_state %>%
+SBEBiotech_EPSCOROnly <- props_by_state %>%
   filter(st_code %in% epscor_states)
 
-SBESecurity_EPSCOROnly <- rename(SBESecurity_EPSCOROnly, "EPSCOR State" = "st_code")
+SBEBiotech_EPSCOROnly <- rename(SBEBiotech_EPSCOROnly, "EPSCOR State" = "st_code")
 
-write.csv(SBESecurity_EPSCOROnly, file="C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/SBESecurity_EPSCOROnly.csv")
+write.csv(SBEBiotech_EPSCOROnly, file="C:/Users/dagboh/OneDrive - National Science Foundation/Documents/Data/National Security Task for Lee/Biotech/SBEBiotechAwards_EPSCOROnly.csv")
